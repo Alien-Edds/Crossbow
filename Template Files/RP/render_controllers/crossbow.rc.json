@@ -1,0 +1,35 @@
+{
+    "format_version": "1.10.0",
+    "render_controllers": {
+        "controller.render.ae_cb.crossbow": {
+            "materials": [
+                {
+                    "*": "variable.is_enchanted ? material.enchanted : material.default"
+                }
+            ],
+            "arrays": {
+                "textures": {
+                    "Array.texture": [
+                        "Texture.standby",
+                        "Texture.pulling0",
+                        "Texture.pulling1",
+                        "Texture.pulling2"
+                    ]
+                },
+                "geometries": {
+                    "Array.geometry": [
+                        "Geometry.standby",
+                        "Geometry.pulling0",
+                        "Geometry.pulling1",
+                        "Geometry.pulling2"
+                    ]
+                }
+            },
+            "geometry": "Array.geometry[(v.has_arrow > 0 && v.charge_amount > 0) ? math.floor(1 + v.charge_amount * 2) : 0]",
+            "textures": [
+                "Array.texture[(v.has_arrow > 0 && v.charge_amount > 0) ? math.floor(1 + v.charge_amount * 2) : 0]",
+                "texture.enchanted"
+            ]
+        }
+    }
+}

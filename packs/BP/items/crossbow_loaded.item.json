@@ -1,0 +1,35 @@
+{
+    "format_version": "1.21.110",
+    "minecraft:item": {
+        "description": {
+            "identifier": "ae_cb:crossbow_loaded",
+            "menu_category": {
+                "category": "none"
+            }
+        },
+        "components": {
+            "minecraft:icon": "ae_cb:crossbow_loaded",
+            "minecraft:use_animation": "crossbow",
+            "ae_cb:crossbow": {
+                "loaded": "ae_cb:crossbow_loaded",
+                "default": "ae_cb:crossbow",
+                "projectile": "ae_cb:crossbow_arrow",
+                "projectile_item": "arrow",
+                "power": 3.5,
+                "shoot_sound": "crossbow.shoot",
+                "loaded_sound": "crossbow.loading.end",
+                "loading_sound": "crossbow.loading.start",
+                "loading_middle_sound": "crossbow.loading.middle",
+                "loaded_animation": "animation.ae_cb.player.crossbow"
+            },
+            "minecraft:enchantable": {
+                "slot": "crossbow",
+                "value": 15
+            },
+            "minecraft:durability": {
+                "max_durability": 466
+            },
+            "minecraft:max_stack_size": 1
+        }
+    }
+}

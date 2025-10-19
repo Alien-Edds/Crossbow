@@ -1,0 +1,12 @@
+{
+    "resource_pack_name": "pack.name",
+    "texture_name": "atlas.items",
+    "texture_data": {
+        "ae_cb:crossbow": {
+            "textures": "textures/ae_cb/items/crossbow_standby"
+        },
+        "ae_cb:crossbow_loaded": {
+            "textures": "textures/ae_cb/items/crossbow_arrow"
+        }
+    }
+}

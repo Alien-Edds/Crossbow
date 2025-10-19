@@ -1,0 +1,50 @@
+{
+	"$schema": "https://raw.githubusercontent.com/Bedrock-OSS/regolith-schemas/main/config/v1.4.json",
+	"author": "Alien Edds",
+	"name": "Crossbow Template",
+	"packs": {
+		"behaviorPack": "./packs/BP",
+		"resourcePack": "./packs/RP"
+	},
+	"regolith": {
+		"dataPath": "./packs/data",
+		"filterDefinitions": {
+			"fast_ts": {
+				"url": "github.com/lightyisreal/regolith-filters",
+				"version": "869d61032fd27189801bf8cdc9595d8d660b2ec7"
+			},
+			"mcaddon": {
+				"url": "github.com/lightyisreal/regolith-filters",
+				"version": "869d61032fd27189801bf8cdc9595d8d660b2ec7"
+			}
+		},
+		"formatVersion": "1.4.0",
+		"profiles": {
+			"default": {
+				"export": {
+					"build": "standard",
+					"readOnly": false,
+					"target": "development"
+				},
+				"filters": [
+					{
+						"filter": "fast_ts"
+					}
+				]
+			},
+			"production": {
+				"export": {
+					"target": "local"
+				},
+				"filters": [
+					{
+						"profile": "default"
+					},
+					{
+						"filter": "mcaddon"
+					}
+				]
+			}
+		}
+	}
+}
