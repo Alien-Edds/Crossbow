@@ -221,5 +221,11 @@ export class CrossbowBehavior {
                 this.animPlayers[player.id] = params.loaded_animation
             }
         })
+        world.afterEvents.itemReleaseUse.subscribe((data) => {
+            const comp = data.itemStack?.getComponent(`${namespace}:crossbow`)?.customComponentParameters.params as CrossbowBehaviorParameters | undefined
+            if (!comp) return
+            if (data.itemStack?.typeId !== comp.loaded) return
+            delete this.loadedPlayers[data.source.id]
+        })
     }
 }
