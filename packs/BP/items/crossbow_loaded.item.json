@@ -20,7 +20,8 @@
                 "loaded_sound": "crossbow.loading.end",
                 "loading_sound": "crossbow.loading.start",
                 "loading_middle_sound": "crossbow.loading.middle",
-                "loaded_animation": "animation.ae_cb.player.crossbow"
+                "loaded_animation": "animation.ae_cb.player.crossbow",
+                "multishot": 2
             },
             "minecraft:enchantable": {
                 "slot": "crossbow",
