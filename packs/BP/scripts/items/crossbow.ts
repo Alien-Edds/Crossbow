@@ -5,9 +5,10 @@ import { Vector3Utils } from "../utils/vec3";
 export interface CrossbowBehaviorParameters {
     default: string,
     loaded: string,
+    unusable?: string,
     projectile: string,
     power?: number,
-    projectile_item: string,
+    projectile_item?: string,
     shoot_sound?: string | {
         id: string,
         volume?: number,
@@ -146,7 +147,7 @@ export class CrossbowBehavior {
                     if (item.typeId !== data.itemStack.typeId) return
                     const params = arg.params as CrossbowBehaviorParameters
                     if (item.typeId === params.loaded) return
-                    if (!removeItem(source, params.projectile_item)) return
+                    if (params.projectile_item) { if (!removeItem(source, params.projectile_item)) return }
                     const newItem = this.convertItem(item, params.loaded)
                     mainhand.setItem(newItem)
                     if (params.loaded_sound) this.playSound(source.dimension, source.location, params.loaded_sound)
@@ -176,7 +177,16 @@ export class CrossbowBehavior {
                         } else projectile.applyImpulse(Vector3Utils.multiply(viewDir, { x: params.power ?? 1, y: params.power ?? 1, z: params.power ?? 1 }))
                         if (params.shoot_sound) this.playSound(source.dimension, source.location, params.shoot_sound)
                         mainhand.setItem(this.decreaseItemDurability(source, this.convertItem(item, params.default), 1))
-                    } else if (hasItem(source, params.projectile_item)) {
+                    } else if (item.typeId === params.unusable) {
+                        if (params.projectile_item && !hasItem(source, params.projectile_item)) return
+                        mainhand.setItem(this.convertItem(item, params.default))
+                    } else {
+                        if (params.projectile_item) {
+                            if (!hasItem(source, params.projectile_item)) {
+                                if (params.unusable) mainhand.setItem(this.convertItem(item, params.unusable))
+                                return
+                            }
+                        }
                         if (params.loading_sound) this.playSound(source.dimension, source.location, params.loading_sound)
                         system.runTimeout(() => {
                             if (params.loading_middle_sound) this.playSound(source.dimension, source.location, params.loading_middle_sound)

@@ -26,6 +26,10 @@
                 "slot": "crossbow",
                 "value": 15
             },
+            "minecraft:use_modifiers": {
+                "use_duration": 9999,
+                "movement_modifier": 1
+            },
             "minecraft:durability": {
                 "max_durability": 466
             },

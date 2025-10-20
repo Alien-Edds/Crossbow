@@ -1,0 +1,7 @@
+
+diagnostic.disable.molang.variable.undefined=true
+diagnostic.disable.molang.texture.undefined=true
+diagnostic.disable.molang.array.undefined=true
+diagnostic.disable.molang.v.undefined=true
+diagnostic.disable.molang.loop=true
+diagnostic.disable.resourcepack.model.bone.missing=true

@@ -2,9 +2,9 @@
     "format_version": "1.21.110",
     "minecraft:item": {
         "description": {
-            "identifier": "ae_cb:crossbow",
+            "identifier": "ae_cb:crossbow_unusable",
             "menu_category": {
-                "category": "equipment"
+                "category": "none"
             }
         },
         "components": {
@@ -27,8 +27,8 @@
                 "value": 15
             },
             "minecraft:use_modifiers": {
-                "use_duration": 1.25,
-                "movement_modifier": 0.35
+                "use_duration": 9999,
+                "movement_modifier": 1
             },
             "minecraft:durability": {
                 "max_durability": 466
