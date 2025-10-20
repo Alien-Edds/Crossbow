@@ -15,7 +15,7 @@
                 "default": "ae_cb:crossbow",
                 "projectile": "ae_cb:crossbow_arrow",
                 "projectile_item": "arrow",
-                "power": 3.5,
+                "power": 4.5,
                 "shoot_sound": "crossbow.shoot",
                 "loaded_sound": "crossbow.loading.end",
                 "loading_sound": "crossbow.loading.start",

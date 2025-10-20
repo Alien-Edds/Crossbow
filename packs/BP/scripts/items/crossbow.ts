@@ -155,7 +155,7 @@ export class CrossbowBehavior {
                     this.loadedPlayers[id] = true
                     system.runTimeout(() => {
                         delete this.loadedPlayers[id]
-                    }, 5)
+                    }, 7)
                 },
                 onUse: (data, arg) => {
                     const { source } = data
