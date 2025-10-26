@@ -1,0 +1,15 @@
+{
+    "format_version": "1.10.0",
+    "animations": {
+        "animation.ae_cb.crossbow_arrow.particle": {
+            "loop": true,
+            "animation_length": 0.05,
+            "particle_effects": {
+                "0.0": {
+                    "effect": "particle",
+                    "pre_effect_script": "v.direction.x = math.random(-1, 1); v.direction.y = math.random(-1, 1); v.direction.z = math.random(-1, 1);"
+                }
+            }
+        }
+    }
+}

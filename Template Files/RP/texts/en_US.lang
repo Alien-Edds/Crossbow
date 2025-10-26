@@ -3,5 +3,6 @@ pack.description=Made by Alien Edds.
 
 item.ae_cb:crossbow=Template Crossbow
 item.ae_cb:crossbow_loaded=Template Crossbow
+item.ae_cb:crossbow_unusable=Template Crossbow
 
 entity.ae_cb:crossbow_arrow.name=Crossbow Arrow

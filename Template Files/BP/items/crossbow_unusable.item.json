@@ -2,16 +2,17 @@
     "format_version": "1.21.110",
     "minecraft:item": {
         "description": {
-            "identifier": "ae_cb:crossbow_loaded",
+            "identifier": "ae_cb:crossbow_unusable",
             "menu_category": {
                 "category": "none"
             }
         },
         "components": {
-            "minecraft:icon": "ae_cb:crossbow_loaded",
+            "minecraft:icon": "ae_cb:crossbow",
             "minecraft:use_animation": "crossbow",
             "ae_cb:crossbow": {
                 "loaded": "ae_cb:crossbow_loaded",
+                "unusable": "ae_cb:crossbow_unusable",
                 "default": "ae_cb:crossbow",
                 "projectile": "ae_cb:crossbow_arrow",
                 "projectile_item": "arrow",
@@ -20,7 +21,6 @@
                 "loaded_sound": "crossbow.loading.end",
                 "loading_sound": "crossbow.loading.start",
                 "loading_middle_sound": "crossbow.loading.middle",
-                "loaded_animation": "animation.ae_cb.player.crossbow",
                 "multishot": 2
             },
             "minecraft:enchantable": {

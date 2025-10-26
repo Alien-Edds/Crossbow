@@ -13,7 +13,11 @@
         "default": "geometry.arrow"
       },
       "animations": {
-        "move": "animation.arrow.move"
+        "move": "animation.arrow.move",
+        "particle": "animation.ae_cb.crossbow_arrow.particle"
+      },
+      "particle_effects": {
+        "particle": "minecraft:basic_crit_particle"
       },
       "scripts": {
         "pre_animation": [
@@ -21,7 +25,10 @@
           "variable.shake_power = variable.shake > 0.0 ? -Math.sin(variable.shake * 200.0) * variable.shake : 0.0;"
         ],
         "animate": [
-          "move"
+          "move",
+          {
+            "particle": "!q.is_on_ground"
+          }
         ]
       },
       "render_controllers": [

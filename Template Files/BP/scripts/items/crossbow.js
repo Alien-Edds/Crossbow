@@ -119,7 +119,9 @@ class CrossbowBehavior {
           if (item.typeId !== data2.itemStack.typeId) return;
           const params = arg.params;
           if (item.typeId === params.loaded) return;
-          if (!removeItem(source, params.projectile_item)) return;
+          if (params.projectile_item) {
+            if (!removeItem(source, params.projectile_item)) return;
+          }
           const newItem = this.convertItem(item, params.loaded);
           mainhand.setItem(newItem);
           if (params.loaded_sound) this.playSound(source.dimension, source.location, params.loaded_sound);
@@ -127,10 +129,10 @@ class CrossbowBehavior {
           this.loadedPlayers[id] = true;
           system.runTimeout(() => {
             delete this.loadedPlayers[id];
-          }, 5);
+          }, 7);
         },
         onUse: (data2, arg) => {
-          var _a, _b, _c, _d, _e, _f, _g, _h;
+          var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
           const { source } = data2;
           const mainhand = (_a = source.getComponent(EntityEquippableComponent.componentId)) == null ? void 0 : _a.getEquipmentSlot(EquipmentSlot.Mainhand);
           const item = mainhand == null ? void 0 : mainhand.getItem();
@@ -140,17 +142,39 @@ class CrossbowBehavior {
           if (item.typeId === params.loaded) {
             if (this.loadedPlayers[source.id]) return;
             const loc = source.getHeadLocation();
-            const projectile = source.dimension.spawnEntity(params.projectile, { x: loc.x, y: 100, z: loc.z });
-            projectile.teleport(loc);
             const viewDir = source.getViewDirection();
-            const comp = projectile.getComponent(EntityProjectileComponent.componentId);
-            if (comp) {
-              comp.owner = source;
-              comp.shoot(Vector3Utils.multiply(viewDir, { x: (_c = params.power) != null ? _c : 1, y: (_d = params.power) != null ? _d : 1, z: (_e = params.power) != null ? _e : 1 }));
-            } else projectile.applyImpulse(Vector3Utils.multiply(viewDir, { x: (_f = params.power) != null ? _f : 1, y: (_g = params.power) != null ? _g : 1, z: (_h = params.power) != null ? _h : 1 }));
-            if (params.shoot_sound) this.playSound(source.dimension, source.location, params.shoot_sound);
-            mainhand.setItem(this.decreaseItemDurability(source, this.convertItem(item, params.default), 1));
-          } else if (hasItem(source, params.projectile_item)) {
+            let amount = ((_c = params.projectile_amount) != null ? _c : 1) + ((_f = (_e = (_d = item.getComponent(ItemEnchantableComponent.componentId)) == null ? void 0 : _d.getEnchantment("multishot")) == null ? void 0 : _e.level) != null ? _f : 0) * ((_g = params.multishot) != null ? _g : 0);
+            for (let i = 0; i < amount; i++) {
+              const projectile = source.dimension.spawnEntity(params.projectile, { x: loc.x, y: 100, z: loc.z });
+              projectile.teleport(loc);
+              const comp = projectile.getComponent(EntityProjectileComponent.componentId);
+              const angle = -((amount - 1) / 2 * ((_h = params.projectile_rotation) != null ? _h : 10)) + ((_i = params.projectile_rotation) != null ? _i : 10) * i;
+              const radians = angle * (Math.PI / 180);
+              if (params.projectile === `${namespace}:crossbow_arrow` && i !== Math.floor((amount - 1) / 2)) projectile.setDynamicProperty("no_pickup", true);
+              let cosTheta = Math.cos(radians);
+              let sinTheta = Math.sin(radians);
+              const direction = {
+                x: viewDir.x * cosTheta + viewDir.z * sinTheta,
+                y: viewDir.y,
+                z: -viewDir.x * sinTheta + viewDir.z * cosTheta
+              };
+              if (comp) {
+                comp.owner = source;
+                comp.shoot(Vector3Utils.multiply(direction, { x: (_j = params.power) != null ? _j : 1, y: (_k = params.power) != null ? _k : 1, z: (_l = params.power) != null ? _l : 1 }));
+              } else projectile.applyImpulse(Vector3Utils.multiply(direction, { x: (_m = params.power) != null ? _m : 1, y: (_n = params.power) != null ? _n : 1, z: (_o = params.power) != null ? _o : 1 }));
+              if (params.shoot_sound) this.playSound(source.dimension, source.location, params.shoot_sound);
+              mainhand.setItem(this.decreaseItemDurability(source, this.convertItem(item, params.default), 1));
+            }
+          } else if (item.typeId === params.unusable) {
+            if (params.projectile_item && !hasItem(source, params.projectile_item)) return;
+            mainhand.setItem(this.convertItem(item, params.default));
+          } else {
+            if (params.projectile_item) {
+              if (!hasItem(source, params.projectile_item)) {
+                if (params.unusable) mainhand.setItem(this.convertItem(item, params.unusable));
+                return;
+              }
+            }
             if (params.loading_sound) this.playSound(source.dimension, source.location, params.loading_sound);
             system.runTimeout(() => {
               if (params.loading_middle_sound) this.playSound(source.dimension, source.location, params.loading_middle_sound);
@@ -164,6 +188,11 @@ class CrossbowBehavior {
       for (const player of world.getAllPlayers()) {
         const mainhand = (_a = player.getComponent(EntityEquippableComponent.componentId)) == null ? void 0 : _a.getEquipmentSlot(EquipmentSlot.Mainhand);
         const item = mainhand == null ? void 0 : mainhand.getItem();
+        for (const arrow of player.dimension.getEntities({ location: player.location, maxDistance: 3, type: `${namespace}:crossbow_arrow` })) {
+          if (!arrow || !arrow.isValid || !arrow.isOnGround) continue;
+          if (!arrow.getDynamicProperty("no_pickup")) continue;
+          arrow.remove();
+        }
         if (!mainhand) continue;
         const params = (_b = item == null ? void 0 : item.getComponent(`${namespace}:crossbow`)) == null ? void 0 : _b.customComponentParameters.params;
         if (!params) {
@@ -185,6 +214,13 @@ class CrossbowBehavior {
         player.playAnimation(params.loaded_animation, { blendOutTime: 999999 });
         this.animPlayers[player.id] = params.loaded_animation;
       }
+    });
+    world.afterEvents.itemReleaseUse.subscribe((data) => {
+      var _a, _b, _c;
+      const comp = (_b = (_a = data.itemStack) == null ? void 0 : _a.getComponent(`${namespace}:crossbow`)) == null ? void 0 : _b.customComponentParameters.params;
+      if (!comp) return;
+      if (((_c = data.itemStack) == null ? void 0 : _c.typeId) !== comp.loaded) return;
+      delete this.loadedPlayers[data.source.id];
     });
   }
 }
